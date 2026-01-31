@@ -1,1 +1,1 @@
-web: gunicorn django_portfolio.wsgi
+web: python3 manage.py collectstatic && gunicorn django_portfolio.wsgi
