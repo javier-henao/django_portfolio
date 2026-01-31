@@ -164,10 +164,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
-ALLOWED_HOSTS = ['javierhenao.com']
-# ALLOWED_HOSTS = ['javierhenao.com', 'web-production-1ee9b.up.railway.app']
+# ALLOWED_HOSTS = ['javierhenao.com']
+ALLOWED_HOSTS = ['javierhenao.com', 'web-production-1ee9b.up.railway.app', 'localhost']
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CSRF_TRUSTED_ORIGINS = ['https://www.javierhenao.com',]
+CSRF_TRUSTED_ORIGINS = ['https://web-production-1ee9b.up.railway.app',]
