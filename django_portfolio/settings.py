@@ -106,7 +106,7 @@ WSGI_APPLICATION = 'django_portfolio.wsgi.application'
 
 # print("DATABASE_URL:", os.getenv('DATABASE_URL'))  # Agrega esta línea para verificar el valor de DATABASE_URL
 DATABASES={
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    'default': dj_database_url.config(default=os.getenv('DATABASE_PUBLIC_URL'))
 }
 
 
