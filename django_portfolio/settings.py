@@ -170,9 +170,9 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # ALLOWED_HOSTS = ['javierhenao.com']
-ALLOWED_HOSTS = ['javierhenao.com', 'web-production-1ee9b.up.railway.app', 'localhost']
+ALLOWED_HOSTS = ['www.javierhenao.com','javierhenao.com', 'web-production-1ee9b.up.railway.app', 'localhost']
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-CSRF_TRUSTED_ORIGINS = ['https://javierhenao.com','https://web-production-1ee9b.up.railway.app',]
+CSRF_TRUSTED_ORIGINS = ['http://*','https://www.javierhenao.com','https://javierhenao.com','https://web-production-1ee9b.up.railway.app',]
