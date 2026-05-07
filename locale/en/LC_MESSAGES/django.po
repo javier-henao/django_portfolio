@@ -1,0 +1,72 @@
+# English translations for django_portfolio.
+# This file is distributed under the same license as the project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django_portfolio 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-07 00:00+0000\n"
+"PO-Revision-Date: 2026-05-07 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Español"
+msgstr "Spanish"
+
+msgid "English"
+msgstr "English"
+
+msgid "Portafolio"
+msgstr "Portfolio"
+
+msgid "Blog"
+msgstr "Blog"
+
+msgid "CV (ES)"
+msgstr "CV (ES)"
+
+msgid "CV (EN)"
+msgstr "CV (EN)"
+
+msgid "Foto de perfil"
+msgstr "Profile picture"
+
+msgid "Soy <strong>Javier Henao</strong>"
+msgstr "I am <strong>Javier Henao</strong>"
+
+msgid "Python FullStack Developer"
+msgstr "Python FullStack Developer"
+
+msgid ""
+"Ingeniero de Software, Especialista en Ciberseguridad y Especialista en "
+"Inteligencia Artificial (en formación), con experiencia en entornos "
+"industriales, optimización de procesos y liderazgo operativo. Poseo "
+"conocimientos en desarrollo backend, análisis de datos, seguridad "
+"informática y metodologías ágiles."
+msgstr ""
+"Software Engineer, Cybersecurity Specialist and Artificial Intelligence "
+"Specialist (in training), with experience in industrial environments, "
+"process optimization and operational leadership. I have knowledge in "
+"backend development, data analysis, information security and agile "
+"methodologies."
+
+msgid "Descargar CV (ES)"
+msgstr "Download CV (ES)"
+
+msgid "Download CV (EN)"
+msgstr "Download CV (EN)"
+
+msgid "Mis Proyectos"
+msgstr "My Projects"
+
+msgid ""
+"A continuación encontrarás listados todos los proyectos que he realizado y "
+"los que están en desarrollo:"
+msgstr ""
+"Below you will find a list of all the projects I have completed and those "
+"currently in development:"

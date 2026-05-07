@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-black">
   <div class="container">
@@ -15,12 +16,34 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'blog:posts' %}">Blog</a>
+          <a class="nav-link" href="{% url 'blog:posts' %}">{% trans "Blog" %}</a>
         </li>
-        <li class="nav-item d-flex align-items-center">
-          <a class="btn btn-primary btn-sm" href="{% static 'portfolio/Javier_Henao_Software_Cybersecurity_CV.pdf' %}" target="_blank">Descarga mi CV</a>
+
+        <li class="nav-item d-flex align-items-center gap-2 me-lg-3 my-2 my-lg-0">
+          <a class="btn btn-primary btn-sm" href="{% static 'portfolio/Javier_Henao_Software_Cybersecurity_CV_ES.pdf' %}" target="_blank" download>
+            {% trans "CV (ES)" %}
+          </a>
+          <a class="btn btn-outline-light btn-sm" href="{% static 'portfolio/Javier_Henao_Software_Cybersecurity_CV_EN.pdf' %}" target="_blank" download>
+            {% trans "CV (EN)" %}
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center gap-1 mb-0">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+            {% get_current_language as CURRENT_LANG %}
+            <button type="submit" name="language" value="es"
+                    class="btn btn-sm {% if CURRENT_LANG == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">
+              ES
+            </button>
+            <button type="submit" name="language" value="en"
+                    class="btn btn-sm {% if CURRENT_LANG == 'en' %}btn-light{% else %}btn-outline-light{% endif %}">
+              EN
+            </button>
+          </form>
         </li>
       </ul>
     </div>
