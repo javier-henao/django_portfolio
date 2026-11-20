@@ -5,7 +5,7 @@ Portafolio y blog personal desarrollado con Django y desplegado en Railway.
 ## Stack
 
 - Python 3.13 + Django 6
-- PostgreSQL (Railway) / SQLite en local
+- PostgreSQL (Railway) o SQLite
 - Gunicorn + WhiteNoise
 - Bootstrap 5
 
@@ -23,35 +23,55 @@ python manage.py runserver
 ```
 
 Sin `DATABASE_URL` la aplicación usa `db.sqlite3`, así que no necesitas
-PostgreSQL para trabajar localmente.
+PostgreSQL para trabajar localmente. Las migraciones de datos crean los
+proyectos y el primer post de ejemplo.
 
 ## Despliegue en Railway
 
 El arranque lo hace [`start.sh`](start.sh): aplica migraciones, ejecuta
-`collectstatic` y levanta Gunicorn en `0.0.0.0:$PORT`. `Procfile` y
-`railway.json` apuntan a ese script.
+`collectstatic`, crea el superusuario si hace falta y levanta Gunicorn en
+`0.0.0.0:$PORT`. `Procfile` y `railway.json` apuntan a ese script.
 
-Variables de entorno necesarias en el servicio:
+Variables de entorno recomendadas en el servicio:
 
-| Variable        | Valor                                                        |
-| --------------- | ------------------------------------------------------------ |
-| `SECRET_KEY`    | Clave larga y aleatoria (obligatoria en producción)          |
-| `DEBUG`         | `False`                                                      |
-| `DATABASE_URL`  | La inyecta Railway al conectar el plugin de PostgreSQL       |
-| `ALLOWED_HOSTS` | Opcional; el dominio de Railway se detecta automáticamente   |
+| Variable                      | Valor                                                        |
+| ----------------------------- | ------------------------------------------------------------ |
+| `SECRET_KEY`                  | Clave larga y aleatoria (obligatoria)                        |
+| `DEBUG`                       | `False`                                                      |
+| `DATABASE_URL`                | Referencia `${{Postgres.DATABASE_URL}}` (recomendado)        |
+| `DJANGO_SUPERUSER_USERNAME`   | Usuario del admin que se crea al arrancar                    |
+| `DJANGO_SUPERUSER_PASSWORD`   | Contraseña de ese usuario                                    |
+| `DJANGO_SUPERUSER_EMAIL`      | Correo del usuario                                           |
 
-> Si en el panel de Railway hay un **Start Command** personalizado, bórralo o
-> pon `sh ./start.sh`; de lo contrario se ignoran `Procfile` y `railway.json`,
-> no se ejecutan las migraciones y el sitio responde 500.
+`ALLOWED_HOSTS` y `CSRF_TRUSTED_ORIGINS` detectan el dominio de Railway
+(`RAILWAY_PUBLIC_DOMAIN`) y el dominio propio `javierhenao.com`.
+
+### Base de datos
+
+El proyecto usa PostgreSQL si existe `DATABASE_URL` (o `DATABASE_PUBLIC_URL`,
+o las variables `PGHOST`/`PGUSER`/…). En caso contrario cae en SQLite.
+
+Si el servicio no tiene PostgreSQL conectado, la base SQLite vive en el
+sistema de archivos efímero de Railway: **los cambios hechos desde `/admin`
+se pierden en cada redeploy**. Para evitarlo:
+
+1. Conecta un servicio PostgreSQL y referencia su `DATABASE_URL` en las
+   variables del servicio web (opción recomendada), o
+2. monta un volumen de Railway: la app guarda `db.sqlite3` en
+   `RAILWAY_VOLUME_MOUNT_PATH`.
 
 ### Archivos multimedia
 
-En Railway el sistema de archivos es efímero. Las imágenes incluidas en el
-repositorio (`media/`) se sirven correctamente, pero las que se suban desde
-`/admin` se pierden en cada redeploy. Para persistirlas, monta un volumen en
-`/app/media` o configura un almacenamiento externo (S3, Cloudinary, etc.).
+Las imágenes incluidas en el repositorio (`media/`) se sirven bien, pero las
+que se suban desde `/admin` también necesitan un volumen en `/app/media` o un
+almacenamiento externo (S3, Cloudinary, etc.).
 
-## Producción
+### Diagnóstico
+
+`GET /healthz/` devuelve `{"status": "ok", "database": "postgresql"}` (o
+`503` si la base no responde).
+
+## Comprobaciones
 
 ```bash
 python manage.py check --deploy

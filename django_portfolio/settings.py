@@ -113,9 +113,22 @@ WSGI_APPLICATION = "django_portfolio.wsgi.application"
 
 # Database
 # Prioriza la URL privada de Railway (DATABASE_URL); DATABASE_PUBLIC_URL
-# queda como respaldo. Sin ninguna de las dos usa SQLite (desarrollo local).
+# queda como respaldo. Sin ninguna de las dos usa SQLite (desarrollo local o
+# despliegues pequeños sin PostgreSQL).
 
 DATABASE_URL = os.getenv("DATABASE_URL") or os.getenv("DATABASE_PUBLIC_URL")
+
+# Respaldo: variables sueltas del plugin PostgreSQL de Railway.
+if not DATABASE_URL and os.getenv("PGHOST"):
+    from urllib.parse import quote_plus
+
+    DATABASE_URL = "postgresql://{user}:{password}@{host}:{port}/{name}".format(
+        user=quote_plus(os.getenv("PGUSER", "postgres")),
+        password=quote_plus(os.getenv("PGPASSWORD", "")),
+        host=os.getenv("PGHOST"),
+        port=os.getenv("PGPORT", "5432"),
+        name=os.getenv("PGDATABASE", "railway"),
+    )
 
 if DATABASE_URL:
     _db_config = dj_database_url.parse(

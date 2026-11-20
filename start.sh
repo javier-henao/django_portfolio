@@ -15,14 +15,19 @@ else
   PYTHON=python3
 fi
 
-# No abortamos el arranque si la base o los estáticos fallan: preferimos que
-# la app levante y poder diagnosticar en /healthz (Railway no muestra logs
-# sin iniciar sesión en el panel).
 echo "==> Aplicando migraciones"
-"$PYTHON" manage.py migrate --noinput || echo "!! migrate falló"
+"$PYTHON" manage.py migrate --noinput
 
 echo "==> Recolectando archivos estáticos"
-"$PYTHON" manage.py collectstatic --noinput || echo "!! collectstatic falló"
+"$PYTHON" manage.py collectstatic --noinput
+
+# Crea el superusuario desde variables de entorno si aún no existe.
+# Define DJANGO_SUPERUSER_USERNAME, DJANGO_SUPERUSER_PASSWORD y
+# DJANGO_SUPERUSER_EMAIL en Railway.
+if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ]; then
+  echo "==> Asegurando superusuario"
+  "$PYTHON" manage.py createsuperuser --noinput || echo "!! el superusuario ya existe"
+fi
 
 echo "==> Iniciando gunicorn en 0.0.0.0:${PORT}"
 exec gunicorn django_portfolio.wsgi:application \
