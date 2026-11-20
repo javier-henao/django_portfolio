@@ -198,6 +198,9 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Cambia esta versión al modificar CSS/JS para romper la caché del navegador.
+ASSET_VERSION = os.getenv("ASSET_VERSION", "2026-11-20-2")
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 

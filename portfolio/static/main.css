@@ -14,8 +14,6 @@
 /* Hallmark · reworded "Python FullStack Developer" to the hero role line · kept names the heading */
 /* Hallmark · hero-review: not run separately · the finish review settled the first-screen findings */
 /* Hallmark · finish-review: fix · 7 findings · 7 resolved */
-@import url("./tokens.css");
-@import url("./base.css");
 
 :root {
   --text-hero: clamp(3.25rem, 14vw, 13rem);

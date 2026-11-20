@@ -2,16 +2,19 @@ from django.conf import settings
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.views.decorators.cache import never_cache
 
 from .models import Project
 
 
+@never_cache
 def home(request):
     projects = Project.objects.all()
 
     return render(request, "home.html", {"projects": projects})
 
 
+@never_cache
 def healthz(request):
     """Comprobación de salud usada por Railway/monitorización."""
     engine = settings.DATABASES.get("default", {}).get("ENGINE", "")
