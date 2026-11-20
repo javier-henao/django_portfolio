@@ -15,11 +15,14 @@ else
   PYTHON=python3
 fi
 
+# No abortamos el arranque si la base o los estáticos fallan: preferimos que
+# la app levante y poder diagnosticar en /healthz (Railway no muestra logs
+# sin iniciar sesión en el panel).
 echo "==> Aplicando migraciones"
-"$PYTHON" manage.py migrate --noinput
+"$PYTHON" manage.py migrate --noinput || echo "!! migrate falló"
 
 echo "==> Recolectando archivos estáticos"
-"$PYTHON" manage.py collectstatic --noinput
+"$PYTHON" manage.py collectstatic --noinput || echo "!! collectstatic falló"
 
 echo "==> Iniciando gunicorn en 0.0.0.0:${PORT}"
 exec gunicorn django_portfolio.wsgi:application \

@@ -118,13 +118,25 @@ WSGI_APPLICATION = "django_portfolio.wsgi.application"
 DATABASE_URL = os.getenv("DATABASE_URL") or os.getenv("DATABASE_PUBLIC_URL")
 
 if DATABASE_URL:
-    DATABASES = {
-        "default": dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
+    _db_config = dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+
+    # Railway exige TLS en la URL pública (proxy TCP). En la red interna
+    # (*.railway.internal) la conexión va sin TLS.
+    if DATABASE_URL.startswith(("postgres://", "postgresql://")):
+        _host = (_db_config.get("HOST") or "").split(":")[0]
+        _is_internal = _host.endswith(".railway.internal") or _host in {
+            "localhost",
+            "127.0.0.1",
+        }
+        _options = _db_config.setdefault("OPTIONS", {})
+        if not _is_internal and "sslmode" not in _options:
+            _options["sslmode"] = "require"
+
+    DATABASES = {"default": _db_config}
 else:
     DATABASES = {
         "default": {
