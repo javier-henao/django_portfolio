@@ -4,19 +4,16 @@ from django.templatetags.static import static
 from .models import Profile
 
 DEFAULT_CV = "portfolio/Javier_Henao_Software_Cybersecurity_CV.pdf"
+DEFAULT_PHOTO = "portfolio/foto.jpg"
 
 
-def site_profile(request):
-    """Expone el CV vigente y la versión de los assets a todas las plantillas."""
-    profile = Profile.objects.first()
-
-    if profile and profile.cv:
-        cv_url = profile.cv.url
-    else:
-        cv_url = static(DEFAULT_CV)
+def site_content(request):
+    """Contenido editable y versión de assets para todas las plantillas."""
+    site = Profile.objects.first() or Profile()
 
     return {
-        "site_profile": profile,
-        "cv_url": cv_url,
+        "site": site,
+        "cv_url": site.cv.url if site.cv else static(DEFAULT_CV),
+        "photo_url": site.photo.url if site.photo else static(DEFAULT_PHOTO),
         "asset_version": settings.ASSET_VERSION,
     }

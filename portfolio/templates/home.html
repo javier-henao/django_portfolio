@@ -1,19 +1,19 @@
 {% extends 'layout.html' %}
 {% load static %}
 
-{% block title %}Javier Henao · Portafolio{% endblock %}
+{% block title %}{{ site.name }} · Portafolio{% endblock %}
 
 {% block content %}
 
 <section class="hero">
   <div class="container hero-inner">
-    <h1>Javier Henao</h1>
-    <p class="hero-sentence">Ingeniero de software y especialista en ciberseguridad.</p>
+    <h1>{{ site.name }}</h1>
+    <p class="hero-sentence">{{ site.hero_sentence }}</p>
     <div class="hero-actions">
       <a class="btn btn--primary" href="{{ cv_url }}" target="_blank" rel="noopener">Descargar CV</a>
       <a class="btn" href="#proyectos">Ver proyectos</a>
     </div>
-    <p class="hero-role">Python FullStack Developer</p>
+    <p class="hero-role">{{ site.role }}</p>
   </div>
 </section>
 
@@ -24,38 +24,42 @@
     </div>
     <div class="profile-grid">
       <figure class="portrait">
-        <img src="{% static 'portfolio/foto.jpg' %}" alt="Javier Henao" width="288" height="288">
-        <figcaption>Javier Henao</figcaption>
+        <img src="{{ photo_url }}" alt="{{ site.name }}" width="288" height="288">
+        <figcaption>{{ site.name }}</figcaption>
       </figure>
       <div class="profile-body">
-        <p class="profile-bio">
-          Ingeniero de Software, Especialista en Ciberseguridad y Especialista en
-          Inteligencia Artificial (en formación), con experiencia en entornos
-          industriales, optimización de procesos y liderazgo operativo. Poseo
-          conocimientos en desarrollo backend, análisis de datos, seguridad
-          informática y metodologías ágiles.
-        </p>
+        <p class="profile-bio">{{ site.bio|linebreaksbr }}</p>
         <dl class="sheet">
+          {% if site.sheet_role %}
           <div class="sheet-row">
             <dt>Rol</dt>
-            <dd>Python FullStack Developer</dd>
+            <dd>{{ site.sheet_role }}</dd>
           </div>
+          {% endif %}
+          {% if site.sheet_education %}
           <div class="sheet-row">
             <dt>Formación</dt>
-            <dd>Ingeniería de Software</dd>
+            <dd>{{ site.sheet_education }}</dd>
           </div>
+          {% endif %}
+          {% if site.sheet_specialty %}
           <div class="sheet-row">
             <dt>Especialidad</dt>
-            <dd>Ciberseguridad</dd>
+            <dd>{{ site.sheet_specialty }}</dd>
           </div>
+          {% endif %}
+          {% if site.sheet_learning %}
           <div class="sheet-row">
             <dt>En curso</dt>
-            <dd>Inteligencia Artificial</dd>
+            <dd>{{ site.sheet_learning }}</dd>
           </div>
+          {% endif %}
+          {% if site.sheet_focus %}
           <div class="sheet-row">
             <dt>Enfoque</dt>
-            <dd>Backend, datos y seguridad</dd>
+            <dd>{{ site.sheet_focus }}</dd>
           </div>
+          {% endif %}
         </dl>
       </div>
     </div>
@@ -66,10 +70,9 @@
   <div class="container">
     <div class="section-head">
       <h2>Proyectos</h2>
-      <p class="section-note">
-        A continuación encontraras listados todos los proyectos que he realizado
-        y los que están en desarrollo:
-      </p>
+      {% if site.project_intro %}
+      <p class="section-note">{{ site.project_intro }}</p>
+      {% endif %}
     </div>
     <ol class="work-index">
       {% for project in projects %}
@@ -100,7 +103,7 @@
 
 <section class="close grained">
   <div class="container close-grid">
-    <h2>El CV completo, en PDF</h2>
+    <h2>{{ site.cv_heading }}</h2>
     <div class="close-action">
       <a class="btn" href="{{ cv_url }}" target="_blank" rel="noopener">Descargar CV</a>
     </div>

@@ -7,7 +7,7 @@ Portafolio y blog personal desarrollado con Django y desplegado en Railway.
 - Python 3.13 + Django 6
 - PostgreSQL (Railway) o SQLite
 - Gunicorn + WhiteNoise
-- Bootstrap 5
+- Tema claro y oscuro con preferencia guardada en el navegador
 
 ## Desarrollo local
 
@@ -46,47 +46,53 @@ Variables de entorno recomendadas en el servicio:
 `ALLOWED_HOSTS` y `CSRF_TRUSTED_ORIGINS` detectan el dominio de Railway
 (`RAILWAY_PUBLIC_DOMAIN`) y el dominio propio `javierhenao.com`.
 
-### Base de datos
+### Persistencia de datos (importante)
+
+Si no hay PostgreSQL ni volumen, Railway usa un disco efímero y **lo que se
+edite en `/admin` se pierde en cada despliegue**. Hay dos formas de evitarlo:
+
+1. **PostgreSQL** (recomendado): conecta el servicio de Postgres y referencia
+   `DATABASE_URL = ${{Postgres.DATABASE_URL}}` en las variables del servicio
+   web. Los datos quedan en la base.
+2. **Volumen de Railway**: añade un volumen al servicio con mount path
+   `/data`. Railway inyecta `RAILWAY_VOLUME_MOUNT_PATH`; la app guarda ahí
+   `db.sqlite3` y los medios. En el primer arranque copia las imágenes del
+   repositorio al volumen; los archivos subidos desde `/admin` se conservan.
 
 El proyecto usa PostgreSQL si existe `DATABASE_URL` (o `DATABASE_PUBLIC_URL`,
-o las variables `PGHOST`/`PGUSER`/…). En caso contrario cae en SQLite.
-
-Si el servicio no tiene PostgreSQL conectado, la base SQLite vive en el
-sistema de archivos efímero de Railway: **los cambios hechos desde `/admin`
-se pierden en cada redeploy**. Para evitarlo:
-
-1. Conecta un servicio PostgreSQL y referencia su `DATABASE_URL` en las
-   variables del servicio web (opción recomendada), o
-2. monta un volumen de Railway: la app guarda `db.sqlite3` en
-   `RAILWAY_VOLUME_MOUNT_PATH`.
+o las variables `PGHOST`/`PGUSER`/…). En caso contrario cae en SQLite dentro
+de `RAILWAY_VOLUME_MOUNT_PATH` o, si no hay volumen, en el directorio de la
+app.
 
 ## Contenido editable
 
-Desde `/admin/` se gestionan los proyectos, las entradas del blog y el CV:
+Desde `/admin/` se gestiona todo el contenido visible sin tocar código:
 
-- **Perfil → CV**: sube el PDF que descargan los botones «Descargar CV».
-  Mientras no haya un archivo subido se sirve el PDF del repositorio
-  (`portfolio/static/portfolio/Javier_Henao_Software_Cybersecurity_CV.pdf`).
-- **Proyectos**: título, descripción, imagen y enlace de cada proyecto.
+- **Contenido del sitio** (fila única): nombre, cargo, retrato, frase de
+  portada, bio, ficha del perfil (rol, formación, especialidad, en curso y
+  enfoque), introducción de proyectos, texto y PDF del CV y meta descripción.
+  Deja vacía una fila de la ficha para ocultarla.
+- **Proyectos**: título, descripción, imagen y enlace.
 - **Blog**: entradas con fecha, imagen y contenido.
 
-### Archivos multimedia
+Los botones «Descargar CV» usan el PDF subido; si no hay ninguno, sirven el
+del repositorio (`portfolio/static/portfolio/Javier_Henao_Software_Cybersecurity_CV.pdf`).
 
-En Railway el sistema de archivos es efímero: un CV o una imagen subidos
-desde `/admin` desaparecen en el siguiente redeploy (y la fila del Perfil
-también, porque la base SQLite vive en el mismo disco). Para conservarlos:
+### Modo claro y oscuro
 
-1. Conecta PostgreSQL y referencia `DATABASE_URL` (así persisten los datos).
-2. Monta un volumen en `/app/media/cv` para los CV, o en `/data` y define
-   `RAILWAY_VOLUME_MOUNT_PATH=/data` (así persisten también la base SQLite y
-   los medios). O usa un almacenamiento externo (S3, Cloudinary, etc.).
-3. Si no usas volumen, mantén el PDF del repositorio actualizado: es el
-   respaldo que se sirve siempre.
+El tema sigue la preferencia del sistema y el botón del nav la cambia; la
+elección se guarda en `localStorage`. Todos los colores salen de
+`portfolio/static/tokens.css` (bloque `:root` para oscuro y
+`html[data-theme="light"]` para claro).
+
+Al cambiar CSS o JS, sube `ASSET_VERSION` en `django_portfolio/settings.py`
+(o define la variable `ASSET_VERSION`): las URLs llevan `?v=` para romper la
+caché del navegador.
 
 ### Diagnóstico
 
-`GET /healthz/` devuelve `{"status": "ok", "database": "postgresql"}` (o
-`503` si la base no responde).
+`GET /healthz/` devuelve `{"status": "ok", "database": "sqlite3"}` (o `503`
+si la base no responde).
 
 ## Comprobaciones
 

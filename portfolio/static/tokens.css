@@ -12,9 +12,29 @@
   --color-paper: oklch(12.5% 0.008 55); --color-paper-2: oklch(16% 0.009 55); --color-paper-3: oklch(20.5% 0.01 55);
   --color-ink: oklch(92% 0.012 78); --color-ink-2: oklch(80% 0.012 75); --color-muted: oklch(64% 0.012 65);
   --color-rule: oklch(29% 0.01 55);
-  --color-accent: oklch(73% 0.15 58); --color-accent-deep: oklch(50% 0.11 52); --color-accent-ink: oklch(12.5% 0.008 55); --color-focus: oklch(73% 0.15 58);
+  --color-accent: oklch(73% 0.15 58); --color-accent-deep: oklch(50% 0.11 52); --color-accent-ink: oklch(12.5% 0.008 55); --color-accent-text: oklch(73% 0.15 58); --color-focus: oklch(73% 0.15 58);
   --font-display: "Sofia Sans Extra Condensed", ui-sans-serif, sans-serif; --font-body: "Barlow", ui-sans-serif, sans-serif;
   --font-outlier: var(--font-body);
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --shadow-card: none;
   --tracking-display: -0.005em; --display-weight: 200; --grain: 0.07;
+}
+
+
+/* Modo claro: el mismo sistema impreso en papel, con el ámbar oscurecido
+   para conservar el contraste del texto. */
+html[data-theme="light"] {
+  color-scheme: light;
+  --color-paper: oklch(95% 0.012 80);
+  --color-paper-2: oklch(91% 0.014 78);
+  --color-paper-3: oklch(87% 0.016 75);
+  --color-ink: oklch(15% 0.008 45);
+  --color-ink-2: oklch(30% 0.008 50);
+  --color-muted: oklch(45% 0.01 55);
+  --color-rule: oklch(80% 0.014 70);
+  --color-accent: oklch(60% 0.15 58);
+  --color-accent-deep: oklch(45% 0.12 55);
+  --color-accent-ink: oklch(12% 0.008 45);
+  --color-accent-text: oklch(46% 0.13 58);
+  --color-focus: oklch(46% 0.13 58);
+  --grain: 0.05;
 }

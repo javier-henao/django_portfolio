@@ -103,7 +103,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "portfolio.context_processors.site_profile",
+                "portfolio.context_processors.site_content",
             ],
         },
     },
@@ -116,6 +116,10 @@ WSGI_APPLICATION = "django_portfolio.wsgi.application"
 # Prioriza la URL privada de Railway (DATABASE_URL); DATABASE_PUBLIC_URL
 # queda como respaldo. Sin ninguna de las dos usa SQLite (desarrollo local o
 # despliegues pequeños sin PostgreSQL).
+
+# Directorio de datos: si Railway monta un volumen, la base SQLite y los
+# archivos subidos desde /admin viven ahí y sobreviven a los redeploys.
+DATA_DIR = Path(os.getenv("RAILWAY_VOLUME_MOUNT_PATH") or BASE_DIR)
 
 DATABASE_URL = os.getenv("DATABASE_URL") or os.getenv("DATABASE_PUBLIC_URL")
 
@@ -153,13 +157,12 @@ if DATABASE_URL:
     DATABASES = {"default": _db_config}
 else:
     # Sin URL de base de datos (p. ej. Railway sin PostgreSQL conectado) la
-    # app usa SQLite. Si hay un volumen montado, la base se guarda allí y
-    # sobrevive a los redeploys.
-    _sqlite_dir = Path(os.getenv("RAILWAY_VOLUME_MOUNT_PATH") or BASE_DIR)
+    # app usa SQLite. Con un volumen montado, la base se guarda en DATA_DIR
+    # y sobrevive a los redeploys.
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": _sqlite_dir / "db.sqlite3",
+            "NAME": DATA_DIR / "db.sqlite3",
         }
     }
 
@@ -199,10 +202,10 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Cambia esta versión al modificar CSS/JS para romper la caché del navegador.
-ASSET_VERSION = os.getenv("ASSET_VERSION", "2026-11-20-2")
+ASSET_VERSION = os.getenv("ASSET_VERSION", "2026-11-20-4")
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = DATA_DIR / "media"
 
 # STORAGES reemplaza a STATICFILES_STORAGE (eliminado en Django 5.1+).
 STORAGES = {

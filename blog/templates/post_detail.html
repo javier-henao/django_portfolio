@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}{{ post.title }} · Javier Henao{% endblock %}
+{% block title %}{{ post.title }} · {{ site.name }}{% endblock %}
 
 {% block description %}{{ post.description|striptags|truncatechars:150 }}{% endblock %}
 

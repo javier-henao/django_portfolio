@@ -5,8 +5,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Javier Henao · Portafolio{% endblock %}</title>
-    <meta name="description" content="{% block description %}Portafolio de Javier Henao, ingeniero de software especializado en ciberseguridad e inteligencia artificial.{% endblock %}">
+    <title>{% block title %}{{ site.name }} · Portafolio{% endblock %}</title>
+    <meta name="description" content="{% block description %}{{ site.meta_description }}{% endblock %}">
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem("theme");
+                var theme = saved || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+                document.documentElement.dataset.theme = theme;
+            } catch (e) {}
+        })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400&family=Sofia+Sans+Extra+Condensed:wght@200;400&display=swap" rel="stylesheet">
@@ -26,17 +35,40 @@
     <footer class="site-footer">
         <div class="container footer-grid">
             <div class="footer-brand">
-                <p class="wordmark">Javier Henao</p>
-                <p class="footer-role">Python FullStack Developer</p>
+                <p class="wordmark">{{ site.name }}</p>
+                <p class="footer-role">{{ site.role }}</p>
             </div>
             <nav class="footer-links" aria-label="Pie de página">
                 <a href="{% url 'home' %}">Inicio</a>
                 <a href="{% url 'blog:posts' %}">Blog</a>
                 <a href="{{ cv_url }}" target="_blank" rel="noopener">CV</a>
             </nav>
-            <p class="footer-note">© 2026 Javier Henao</p>
+            <p class="footer-note">© {% now "Y" %} {{ site.name }}</p>
         </div>
     </footer>
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            var button = document.querySelector("[data-theme-toggle]");
+            if (!button) return;
+
+            function label() {
+                button.setAttribute(
+                    "aria-label",
+                    root.dataset.theme === "light" ? "Cambiar a modo oscuro" : "Cambiar a modo claro"
+                );
+            }
+
+            button.addEventListener("click", function () {
+                root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
+                try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+                label();
+            });
+
+            label();
+        })();
+    </script>
 
 </body>
 </html>

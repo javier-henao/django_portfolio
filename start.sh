@@ -15,6 +15,14 @@ else
   PYTHON=python3
 fi
 
+# Con un volumen montado, la base y los medios persisten entre despliegues.
+# La primera vez copiamos las imágenes del repositorio para que los proyectos
+# no aparezcan sin imagen; los archivos subidos desde /admin se conservan.
+if [ -n "$RAILWAY_VOLUME_MOUNT_PATH" ] && [ -d "$PWD/media" ] && [ "$RAILWAY_VOLUME_MOUNT_PATH" != "$PWD" ]; then
+  mkdir -p "$RAILWAY_VOLUME_MOUNT_PATH/media"
+  cp -rn "$PWD/media/." "$RAILWAY_VOLUME_MOUNT_PATH/media/" 2>/dev/null || true
+fi
+
 echo "==> Aplicando migraciones"
 "$PYTHON" manage.py migrate --noinput
 

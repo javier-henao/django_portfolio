@@ -1,7 +1,16 @@
 <header class="site-header">
   <div class="container site-nav">
-    <a class="wordmark" href="{% url 'home' %}">Javier Henao</a>
+    <a class="wordmark" href="{% url 'home' %}">{{ site.name }}</a>
     <nav class="nav-links" aria-label="Principal">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo claro">
+        <svg class="icon icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="icon icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"></path>
+        </svg>
+      </button>
       <a href="{% url 'blog:posts' %}">Blog</a>
       <a class="btn" href="{{ cv_url }}" target="_blank" rel="noopener">Descargar CV</a>
     </nav>
