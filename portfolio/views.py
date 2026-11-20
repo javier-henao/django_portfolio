@@ -20,6 +20,15 @@ def home(request):
 
 def healthz(request):
     """Diagnóstico temporal: estado de base de datos y estáticos."""
+    import traceback
+
+    try:
+        return _healthz(request)
+    except Exception:  # noqa: BLE001
+        return JsonResponse({"fatal": traceback.format_exc()}, status=500)
+
+
+def _healthz(request):
     db_config = settings.DATABASES.get("default", {})
     info = {
         "ok": True,
