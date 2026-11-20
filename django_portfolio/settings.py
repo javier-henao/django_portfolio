@@ -138,10 +138,14 @@ if DATABASE_URL:
 
     DATABASES = {"default": _db_config}
 else:
+    # Sin URL de base de datos (p. ej. Railway sin PostgreSQL conectado) la
+    # app usa SQLite. Si hay un volumen montado, la base se guarda allí y
+    # sobrevive a los redeploys.
+    _sqlite_dir = Path(os.getenv("RAILWAY_VOLUME_MOUNT_PATH") or BASE_DIR)
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "NAME": _sqlite_dir / "db.sqlite3",
         }
     }
 

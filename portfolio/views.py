@@ -38,7 +38,7 @@ def _healthz(request):
         "platform": platform.platform(),
         "db_engine": db_config.get("ENGINE"),
         "db_host": db_config.get("HOST"),
-        "db_name": db_config.get("NAME") if db_config.get("ENGINE", "").endswith("sqlite3") else None,
+        "db_name": str(db_config.get("NAME")) if db_config.get("NAME") else None,
         "db_options": db_config.get("OPTIONS", {}),
         "env": {
             "DATABASE_URL": bool(os.getenv("DATABASE_URL")),
