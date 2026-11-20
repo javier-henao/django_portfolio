@@ -1,12 +1,18 @@
-
-
 **/__pycache__
-db.sqlite3
+*.py[cod]
 
+# Entornos virtuales
 venv
+.venv
 
+# Estáticos generados por collectstatic
 staticfiles
 
+# Variables de entorno y base local
 .env
+db.sqlite3
 
-settings.py
+# macOS / editores
+.DS_Store
+.idea
+.vscode

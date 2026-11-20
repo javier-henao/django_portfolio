@@ -1,1 +1,1 @@
-web: python3 manage.py collectstatic && gunicorn django_portfolio.wsgi
+web: sh ./start.sh
