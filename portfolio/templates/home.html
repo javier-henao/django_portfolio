@@ -1,51 +1,110 @@
-{% extends 'layout.html' %} {% block content %} {% load static %}
+{% extends 'layout.html' %}
+{% load static %}
 
-<header class="row bg-black">
-  <div class="col-md-4">
-    <img src="{% static 'portfolio/foto.jpg' %}" alt="Foto de Perfil" class="img-fluid rounded-circle"/>
+{% block title %}Javier Henao · Portafolio{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="container hero-inner">
+    <h1>Javier Henao</h1>
+    <p class="hero-sentence">Ingeniero de software y especialista en ciberseguridad.</p>
+    <div class="hero-actions">
+      <a class="btn btn--primary" href="{{ cv_url }}" target="_blank" rel="noopener">Descargar CV</a>
+      <a class="btn" href="#proyectos">Ver proyectos</a>
+    </div>
+    <p class="hero-role">Python FullStack Developer</p>
   </div>
+</section>
 
-  <div class="col-md-8 my-auto">
-    <h1>Soy <strong>Javier Henao</strong></h1>
-    <h3>Python FullStack Developer</h3>
-    <p>
-      Ingeniero de Software, Especialista en Ciberseguridad y Especialista en
-      Inteligencia Artificial (en formación), con experiencia en entornos
-      industriales, optimización de procesos y liderazgo operativo. Poseo
-      conocimientos en desarrollo backend, análisis de datos, seguridad
-      informática y metodologías ágiles
-    </p>
-    <a
-      href="{% static 'portfolio/Javier_Henao_CV.pdf' %}"
-      class="btn btn-primary btn-lg rounded-0 my-3"
-      target="_blank"
-      >Descarga mi CV</a
-    >
-  </div>
-</header>
-
-<div class="row my-4 text-center">
-  <h3>Mis Proyectos</h3>
-  <p>
-    A continuación encontraras listados todos los proyectos que he realizado y
-    los que están en desarrollo:
-  </p>
-
-  {% for project in projects %}
-
-  <div class="col-md-4 p-4 card-project">
-    <div class="card bg-black text-light">
-      <img src="{{project.image.url}}" alt="{{project.title}}" class="card-img-top"/>
-      <div class="card-body">
-        <h2>{{project.title}}</h2>
-        <p>{{project.description}}</p>
-        {% if project.url %}
-        <a href="{{project.url}}" class="btn btn-light rounded-0 btn-sm" target="_blank">{{project.url}}</a>
-        {% endif %}
+<section class="section section--tight" id="perfil">
+  <div class="container">
+    <div class="section-head">
+      <h2>Perfil</h2>
+    </div>
+    <div class="profile-grid">
+      <figure class="portrait">
+        <img src="{% static 'portfolio/foto.jpg' %}" alt="Javier Henao" width="288" height="288">
+        <figcaption>Javier Henao</figcaption>
+      </figure>
+      <div class="profile-body">
+        <p class="profile-bio">
+          Ingeniero de Software, Especialista en Ciberseguridad y Especialista en
+          Inteligencia Artificial (en formación), con experiencia en entornos
+          industriales, optimización de procesos y liderazgo operativo. Poseo
+          conocimientos en desarrollo backend, análisis de datos, seguridad
+          informática y metodologías ágiles.
+        </p>
+        <dl class="sheet">
+          <div class="sheet-row">
+            <dt>Rol</dt>
+            <dd>Python FullStack Developer</dd>
+          </div>
+          <div class="sheet-row">
+            <dt>Formación</dt>
+            <dd>Ingeniería de Software</dd>
+          </div>
+          <div class="sheet-row">
+            <dt>Especialidad</dt>
+            <dd>Ciberseguridad</dd>
+          </div>
+          <div class="sheet-row">
+            <dt>En curso</dt>
+            <dd>Inteligencia Artificial</dd>
+          </div>
+          <div class="sheet-row">
+            <dt>Enfoque</dt>
+            <dd>Backend, datos y seguridad</dd>
+          </div>
+        </dl>
       </div>
     </div>
   </div>
+</section>
 
-  {% endfor %} 
-  {% endblock content %}
-</div>
+<section class="section" id="proyectos">
+  <div class="container">
+    <div class="section-head">
+      <h2>Proyectos</h2>
+      <p class="section-note">
+        A continuación encontraras listados todos los proyectos que he realizado
+        y los que están en desarrollo:
+      </p>
+    </div>
+    <ol class="work-index">
+      {% for project in projects %}
+      <li class="work-row">
+        <span class="plate-number">{{ forloop.counter|stringformat:"02d" }}</span>
+        <div class="work-copy">
+          <h3>
+            {% if project.url %}
+            <a href="{{ project.url }}" target="_blank" rel="noopener">{{ project.title }}</a>
+            {% else %}
+            {{ project.title }}
+            {% endif %}
+          </h3>
+          <p>{{ project.description }}</p>
+          {% if project.url %}
+          <a class="work-link" href="{{ project.url }}" target="_blank" rel="noopener">Ver proyecto</a>
+          {% endif %}
+        </div>
+        <figure class="plate">
+          <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy" decoding="async">
+          <figcaption>Placa {{ forloop.counter|stringformat:"02d" }}</figcaption>
+        </figure>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="close grained">
+  <div class="container close-grid">
+    <h2>El CV completo, en PDF</h2>
+    <div class="close-action">
+      <a class="btn" href="{{ cv_url }}" target="_blank" rel="noopener">Descargar CV</a>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

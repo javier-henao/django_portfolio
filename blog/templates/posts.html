@@ -1,23 +1,49 @@
-{% extends 'layout.html' %} {% block content %}
+{% extends 'layout.html' %}
 
-<h1>Posts</h1>
-<p>{{posts.title}}</p>
+{% block title %}Blog · Javier Henao{% endblock %}
 
-{% for post in posts %}
-<div class="p-3">
-  <div class="card card-body bg-black">
-    <div class="row">
-      <div class="col-3">
-        <img src="{{post.image.url}}" alt="{{post.title}}" class="img-fluid" />
-      </div>
-      <div class="col-9">
-        <h2>{{post.title}}</h2>
-        <p>{{post.description|striptags|truncatechars:100}}</p>
-        <p>{{post.date|date:'M d Y'|upper}}</p>
+{% block description %}Notas de Javier Henao sobre desarrollo de software, ciberseguridad e inteligencia artificial.{% endblock %}
 
-        <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary">{{post.title}}</a>
-      </div>
-    </div>
+{% block content %}
+
+<section class="blog-index container">
+  <div class="blog-head">
+    <h1>Blog</h1>
   </div>
-</div>
-{% endfor %} {% endblock content %}
+  {% for post in posts|slice:":1" %}
+  <article class="post-feature">
+    <div class="feature-text">
+      <span class="post-date">{{ post.date|date:"j" }} de {{ post.date|date:"F"|lower }} de {{ post.date|date:"Y" }}</span>
+      <h2><a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></h2>
+      <p>{{ post.description|striptags|truncatechars:240 }}</p>
+    </div>
+    <figure class="post-thumb">
+      <img src="{{ post.image.url }}" alt="{{ post.title }}" decoding="async">
+    </figure>
+  </article>
+  {% empty %}
+  <h1>Blog</h1>
+  <p>No hay entradas todavía.</p>
+  {% endfor %}
+</section>
+
+{% if posts|length > 1 %}
+<section class="blog-more container" aria-label="Más entradas">
+  <ul class="post-list">
+    {% for post in posts|slice:"1:" %}
+    <li class="post-row">
+      <div class="post-body">
+        <span class="post-date">{{ post.date|date:"j" }} de {{ post.date|date:"F"|lower }} de {{ post.date|date:"Y" }}</span>
+        <h2><a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></h2>
+        <p>{{ post.description|striptags|truncatechars:140 }}</p>
+      </div>
+      <figure class="post-thumb">
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy" decoding="async">
+      </figure>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% endblock content %}

@@ -1,0 +1,36 @@
+[
+ {
+  "shape": "Index",
+  "theme": "darkroom",
+  "axes": [
+   "dark",
+   "display-condensed",
+   "chromatic-amber"
+  ],
+  "hero": "Corridor",
+  "nav": "masthead over a static hairline",
+  "footer": "index columns",
+  "imagery": "portrait and three grayscale work plates",
+  "photos": [],
+  "entry": "/",
+  "fingerprint": "e45b06",
+  "sections": [
+   "hero",
+   "perfil",
+   "proyectos",
+   "close",
+   "footer"
+  ],
+  "signature": "the work-in-progress signs printed as grayscale plates, the safelight on their numbers",
+  "waived": [
+   "44c",
+   "79",
+   "77"
+  ],
+  "prompt": "personal portfolio of a software engineer and cybersecurity specialist: a portrait, a short bio, three projects, and a CV download as the main action",
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "site",
+  "date": "2026-11-20"
+ }
+]

@@ -1,13 +1,23 @@
-{% extends "layout.html" %} {% block content %}
+{% extends 'layout.html' %}
 
-<div class="text-center">
-  <p>{{posts.title}}</p>
-  <h2>{{post.title}}</h2>
-  <h3 class="my-2 h5 text-muted">{{post.date|date:'F jS Y'}}</h3>
-  <img src="{{post.image.url}}" alt="{{post.title}}" class="img-fluid" />
-  <div class="my-4">
-    <p>{{post.description|safe}}</p>
+{% block title %}{{ post.title }} · Javier Henao{% endblock %}
+
+{% block description %}{{ post.description|striptags|truncatechars:150 }}{% endblock %}
+
+{% block content %}
+
+<section class="post-hero container">
+  <h1>{{ post.title }}</h1>
+  <span class="post-date">{{ post.date|date:"j" }} de {{ post.date|date:"F"|lower }} de {{ post.date|date:"Y" }}</span>
+  <figure>
+    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+  </figure>
+</section>
+
+<section class="post-copy container">
+  <div class="prose">
+    {{ post.description|safe }}
   </div>
-</div>
+</section>
 
 {% endblock content %}

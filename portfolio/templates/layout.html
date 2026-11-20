@@ -1,23 +1,40 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>{% block title %}Javier Henao · Portafolio{% endblock %}</title>
+    <meta name="description" content="{% block description %}Portafolio de Javier Henao, ingeniero de software especializado en ciberseguridad e inteligencia artificial.{% endblock %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400&family=Sofia+Sans+Extra+Condensed:wght@200;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
-<body class="text-light">
+<body>
 
     {% include 'partials/navbar.html' %}
 
-    <div class="container p-4">
+    <main>
         {% block content %}
         {% endblock content %}
-    </div>
+    </main>
 
-    {% comment %} <footer>Footer</footer> {% endcomment %}
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <p class="wordmark">Javier Henao</p>
+                <p class="footer-role">Python FullStack Developer</p>
+            </div>
+            <nav class="footer-links" aria-label="Pie de página">
+                <a href="{% url 'home' %}">Inicio</a>
+                <a href="{% url 'blog:posts' %}">Blog</a>
+                <a href="{{ cv_url }}" target="_blank" rel="noopener">CV</a>
+            </nav>
+            <p class="footer-note">© 2026 Javier Henao</p>
+        </div>
+    </footer>
+
 </body>
 </html>

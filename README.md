@@ -60,11 +60,28 @@ se pierden en cada redeploy**. Para evitarlo:
 2. monta un volumen de Railway: la app guarda `db.sqlite3` en
    `RAILWAY_VOLUME_MOUNT_PATH`.
 
+## Contenido editable
+
+Desde `/admin/` se gestionan los proyectos, las entradas del blog y el CV:
+
+- **Perfil → CV**: sube el PDF que descargan los botones «Descargar CV».
+  Mientras no haya un archivo subido se sirve el PDF del repositorio
+  (`portfolio/static/portfolio/Javier_Henao_Software_Cybersecurity_CV.pdf`).
+- **Proyectos**: título, descripción, imagen y enlace de cada proyecto.
+- **Blog**: entradas con fecha, imagen y contenido.
+
 ### Archivos multimedia
 
-Las imágenes incluidas en el repositorio (`media/`) se sirven bien, pero las
-que se suban desde `/admin` también necesitan un volumen en `/app/media` o un
-almacenamiento externo (S3, Cloudinary, etc.).
+En Railway el sistema de archivos es efímero: un CV o una imagen subidos
+desde `/admin` desaparecen en el siguiente redeploy (y la fila del Perfil
+también, porque la base SQLite vive en el mismo disco). Para conservarlos:
+
+1. Conecta PostgreSQL y referencia `DATABASE_URL` (así persisten los datos).
+2. Monta un volumen en `/app/media/cv` para los CV, o en `/data` y define
+   `RAILWAY_VOLUME_MOUNT_PATH=/data` (así persisten también la base SQLite y
+   los medios). O usa un almacenamiento externo (S3, Cloudinary, etc.).
+3. Si no usas volumen, mantén el PDF del repositorio actualizado: es el
+   respaldo que se sirve siempre.
 
 ### Diagnóstico
 

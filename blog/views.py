@@ -7,7 +7,7 @@ from .models import Post
 
 def render_posts(request):
 
-    posts = Post.objects.all()
+    posts = Post.objects.order_by("-date")
 
     return render(request, 'posts.html', {'posts': posts})
 
